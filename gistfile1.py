@@ -1,4 +1,8 @@
 #!/usr/bin/python
+# TODO make range command line arguments
+
+import sys, codecs
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout) # if your terminal can't do utf-8, well...
 
 import time
 import urllib2
