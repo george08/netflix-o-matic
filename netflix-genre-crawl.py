@@ -9,7 +9,7 @@ import urllib2
 
 import BeautifulSoup
 
-cookie = """ copy a cookie from eg Chrome's developer tools Request tab into here """
+cookie = """ copy from eg Chrome's developer tools Request tab into here: NetflixId=[string];profilesNewSession=0;profilesNewUser=0 """
 
 def get_genre(i):
     opener = urllib2.build_opener()
