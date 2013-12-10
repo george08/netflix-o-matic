@@ -8,7 +8,7 @@ Creation Myth
 
 December 2:
 Alexis Madrigal tweets his curiosity about Netflix "microgenres":
-https://twitter.com/alexismadrigal/status/407644471392608256
+https://twitter.com/alexismadrigal/status/407644471392608256, 
 https://twitter.com/alexismadrigal/status/407646810035871744
 
 And lists them here:
