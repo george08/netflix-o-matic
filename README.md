@@ -26,4 +26,4 @@ https://gist.github.com/blech/7818890
 And later:
 https://gist.github.com/nicksweeney/7852705
 
-Now we're working out what we might do next. Considering using https://github.com/jlord/sheetsee.js/.
+Now we're working out what we might do next. Considering using https://github.com/jlord/sheetsee.js/, forked here not as a sign of aggressive splitting, but friendly borrowing, if that's such a thing. https://github.com/george08/sheetsee.js
