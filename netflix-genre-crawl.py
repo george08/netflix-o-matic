@@ -18,7 +18,14 @@ def get_genre(i, extra):
     opener.addheaders.append(('Cookie', cookie))
 
     url = "http://movies.netflix.com/WiAltGenre?agid=%s" % i
-    page = opener.open(url)
+    try:
+        page = opener.open(url)
+    except urllib2.HTTPError:
+        print "Skipped %s" % i
+        return
+
+    # new_cookie = page.info().getheader('Set-Cookie')
+
     soup = BeautifulSoup.BeautifulSoup(page.read())
 
     name = soup.find('div', {'class': 'crumb'})
@@ -31,35 +38,38 @@ def get_genre(i, extra):
         movie_data = []
 
         gallery = soup.find('div', {'class': 'agMovieSet agMovieGallery'})
-        for movie in gallery.contents:
-            cover_img = movie.find('img')
-            cover_url = cover_img['src']
-            name = cover_img['alt']
+        if gallery:
+            for movie in gallery.contents:
+                cover_img = movie.find('img')
+                cover_url = cover_img['src']
+                name = cover_img['alt']
 
-            cover_link = movie.find('a')
-            play_url = cover_link['href']
-            ui_track = cover_link['data-uitrack']
+                cover_link = movie.find('a')
+                play_url = cover_link['href']
+                ui_track = cover_link['data-uitrack']
             
-            movie_data.append({'name': name, 'cover': cover_url, 'play': play_url, 
-                               'info': ui_track, 'genre': genre,})
+                movie_data.append({'name': name, 'cover': cover_url, 'play': play_url, 
+                                   'info': ui_track, 'genre': genre,})
 
-        print "%s (%s)" % (genre, i)
-        for movie in movie_data:
-            print "\t%s (%s)" % (movie['name'], movie['info'])
+            print "%s (%s)" % (genre, i)
+            for movie in movie_data:
+                print "\t%s (%s)" % (movie['name'], movie['info'])
 
-# if __name__ == "__main__":
+        else:
+            print "%s (%s) [no movies]" % (genre, i)
 
-parser = OptionParser()
+if __name__ == "__main__":
+    parser = OptionParser()
 
-parser.add_option("-f", "--from", dest="fr", help="start from this ID", type="int")
-parser.add_option("-t", "--to", dest="to", help="go up to this ID", type="int")
-parser.add_option("-x", "--extras", dest="extra", help="get more information", action="store_true")
+    parser.add_option("-f", "--from", dest="fr", help="start from this ID", type="int")
+    parser.add_option("-t", "--to", dest="to", help="go up to this ID", type="int")
+    parser.add_option("-x", "--extras", dest="extra", help="get more information", action="store_true")
 
-(options, args) = parser.parse_args()
+    (options, args) = parser.parse_args()
 
-for i in range(options.fr, options.to):
-    genre = get_genre(i, options.extra)
-    if genre:
-        print "%s (%s)" % (genre, i)
-    time.sleep(0.2)
+    for i in range(options.fr, options.to):
+        genre = get_genre(i, options.extra)
+        if genre:
+            print "%s (%s)" % (genre, i)
+        time.sleep(0.2)
 
