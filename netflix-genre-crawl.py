@@ -7,6 +7,8 @@ sys.stdout = codecs.getwriter('utf-8')(sys.stdout) # if your terminal can't do u
 import time
 import urllib2
 
+import sqlite3
+
 from optparse import OptionParser
 
 import BeautifulSoup
@@ -21,7 +23,8 @@ def get_genre(i, extra):
     try:
         page = opener.open(url)
     except urllib2.HTTPError:
-        print "Skipped %s" % i
+        print "%s [skipped]" % i
+        c.execute('INSERT INTO genres (genre_id, url, skipped) VALUES (?,?,?)', (i, url, True))
         return
 
     # new_cookie = page.info().getheader('Set-Cookie')
@@ -30,9 +33,12 @@ def get_genre(i, extra):
 
     name = soup.find('div', {'class': 'crumb'})
     genre = name.getText().strip()
+    # TODO if "Subgenre" in genre: ...
 
     if not extra:
-        print "%s (%s)" % (genre, i)
+        if name:
+            c.execute('INSERT INTO genres (genre_id, name, url) VALUES (?,?,?)', (i, genre, url))
+        # print "%s (%s)" % (genre, i)
 
     if extra:
         movie_data = []
@@ -48,15 +54,24 @@ def get_genre(i, extra):
                 play_url = cover_link['href']
                 ui_track = cover_link['data-uitrack']
             
-                movie_data.append({'name': name, 'cover': cover_url, 'play': play_url, 
-                                   'info': ui_track, 'genre': genre,})
+                movie_data.append((name, cover_url, play_url, ui_track, i))
 
-            print "%s (%s)" % (genre, i)
-            for movie in movie_data:
-                print "\t%s (%s)" % (movie['name'], movie['info'])
+            # print "%s (%s)" % (genre, i)
+            # for movie in movie_data:
+            #     print "\t%s (%s)" % (movie[0], movie[3])
+
+            c.execute('INSERT INTO genres (genre_id, name, url, movie_count) VALUES (?,?,?,?)', (i, genre, url, len(movie_data)))
+            c.executemany('INSERT INTO movies (name, cover_url, movie_url, info, genres) VALUES (?,?,?,?,?)', movie_data)
 
         else:
-            print "%s (%s) [no movies]" % (genre, i)
+            if name:
+                c.execute('INSERT INTO genres (genre_id, name, url, movie_count) VALUES (?,?,?,?)', (i, genre, url, 0))
+            else:
+                # print "No genre name found for ID %s" % i
+                pass
+    
+    return genre
+
 
 if __name__ == "__main__":
     parser = OptionParser()
@@ -67,9 +82,15 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
+    conn = sqlite3.connect('netflix_genres.sqlite')
+    c = conn.cursor()
+
     for i in range(options.fr, options.to):
         genre = get_genre(i, options.extra)
+        conn.commit()
+
         if genre:
-            print "%s (%s)" % (genre, i)
+            print "%s (%s)" % (i, genre)
         time.sleep(0.2)
 
+    conn.close()
