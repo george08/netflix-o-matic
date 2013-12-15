@@ -8,9 +8,8 @@ CREATE TABLE IF NOT EXISTS
 
 CREATE TABLE IF NOT EXISTS
     movies (id INTEGER PRIMARY KEY AUTOINCREMENT,
-            movie_id TEXT,
+            movie_id TEXT UNIQUE,
             name TEXT NOT NULL,
             cover_url TEXT,
             movie_url TEXT,
-            info TEXT,
             genres TEXT);
