@@ -14,7 +14,7 @@ def handle_extended(c):
     genres = []
     movies = []
 
-    f = codecs.open('extended_results_10000-12345', 'r', encoding='utf-8')
+    f = codecs.open('genres7k.txt', 'r', encoding='utf-8')
     for line in f:
         if not line.startswith('\t'):
             # genre
@@ -57,20 +57,22 @@ def handle_extended(c):
             # turns out I posted these badly so you know let's not bother
             pass
 
-            # line = line.strip()
-            # print line
-            # (name, info) = line.split('(')
-            # 
-            # name = name.strip()
-            # info = info[:info.index(')')]
-            # 
-            # movies.append((name, info))
-            # # TODO collect genres
+            line = line.strip()
+            (name, info) = line.rsplit('(', 1)
+
+            name = name.strip()
+            info = info[:info.index(')')]
+            genre_id = genre_id
+
+            # print ">%s< >%s< >%s<" % (name, info, genre_id)
+
+            movies.append((name, info, genre_id))
+            # TODO collect genres
 
     f.close()
 
-    c.executemany('INSERT INTO genres VALUES (?,?,?,?,?,?)', genres)
-    c.executemany('INSERT INTO movies (name, info) VALUES (?,?)', movies)
+    c.executemany('INSERT OR IGNORE INTO genres VALUES (?,?,?,?,?,?)', genres)
+    c.executemany('INSERT INTO movies (name, info, genres) VALUES (?,?,?)', movies)
 
 def handle_alphabetical(c):
     # handle alphabetical results
@@ -99,8 +101,8 @@ def handle_alphabetical(c):
 conn = sqlite3.connect('netflix_genres.sqlite')
 c = conn.cursor()
 
-# handle_extended(c)
-handle_alphabetical(c)
+handle_extended(c)
+# handle_alphabetical(c)
 
 conn.commit()
 conn.close()
