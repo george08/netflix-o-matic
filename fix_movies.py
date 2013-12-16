@@ -9,6 +9,8 @@ import codecs
 import sqlite3
 import sys
 
+# note to self: best movie URL form is http://movies.netflix.com/WiMovie/70211364
+
 conn = sqlite3.connect('netflix_genres.sqlite')
 c = conn.cursor()
 
