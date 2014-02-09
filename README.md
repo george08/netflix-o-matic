@@ -1,7 +1,7 @@
 netflix-o-matic
 ===============
 
-A fun way to browse Netflix genres! A (potential) collaboration with Paul Mison (@blech), and Nick Sweeney (@holgate).
+A fun way to browse Netflix genres! A (potential) collaboration between me (@george08), Paul Mison (@blech), and Nick Sweeney (@holgate).
 
 Creation Myth
 =============
