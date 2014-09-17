@@ -1,11 +1,13 @@
-body {background-color: #20ecfe; color: white; padding: 50px; font-family: Verdana; font-size: 2em;}
+body {background-color: #20ecfe; color: white; padding: 70px; font-family: "Rockwell", Georgia, serif; font-size: 2em;}
 a:link {color: #eeeeee; text-decoration:none; }
 a:visited {color:#e6f5f6; text-decoration: none;}
 a:hover, a.rawr:hover {color: black; text-decoration: none; background-color: #df1301; }
 a.rawr {color: #df1301;}
 ol {list-style: none;}
 .covers li {float:left; margin-right: 10px; margin-bottom: 10px;}
-h1 {font-size: 1.25em; font-weight: normal; margin-top: 0;}
-.logo {position: absolute; top:0; left: 0}
-.logo img {width: 60; height: 60;}
+h1, h2 {font-size: 1em; margin-top: 0;}
+.logo {position: absolute; top:0; left: 10px; width: 99%; background-color: #20ecfe; }
+.logo img {width: 60; height: 60; float: left;}
+.logo .nav {color: white; font-size: .475em; vertical-align: middle; float:left; padding:20px; text-transform: uppercase;}
+a.nav {color:white;}
 .word {color: #8af3fc;}
