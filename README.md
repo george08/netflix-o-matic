@@ -1,9 +1,11 @@
 netflix-o-matic
 ===============
 
-A fun way to browse Netflix genres! A (potential) collaboration between me (@george08), Paul Mison (@blech), and Nick Sweeney (@holgate).
+This is no longer the canonical repo for this project. Please head over to http://github.com/goodformandspectacle/netflix-o-matic for that.
 
-Creation Myth
+You can play with the finished product at http://netflixomatic.goodformandspectacle.com.
+
+Creation Myth (outdated)
 =============
 
 December 2:
